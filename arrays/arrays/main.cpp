@@ -159,35 +159,46 @@ int List<T>::getCount()
 template<class T>
 void List<T>::insert(unsigned int pos, T addData)
 {
+    if(pos >= count)
+    {
+        this->add(addData);
+        return;
+    }
+    
+    unsigned int currentPosition = 0;
     node *tmpInsert = new node;
     tmpInsert->data = addData;
     tmp = head;
-    int counter = 1;
+    
     while(tmp != NULL)
     {
-        if(pos == counter && tmp == head){
-            tmpInsert->prev = NULL;
-            tmpInsert->next = head;
-            head->prev = tmpInsert;
-            count += 1;
-            return;
-        }
-        else if(pos >= counter && tmp == tail)
+        if(currentPosition == pos || currentPosition == count)
         {
-            tmpInsert->prev = tail;
-            tmpInsert->next = NULL;
-            tail->next = tmpInsert;
-            count += 1;
-            return;
-        }
-        else if(pos == counter && (tmp != head || tmp != tail))
-        {
-            tmpInsert->prev = tmp->prev;
-            tmpInsert->next = tmp->next;
-            tmp->prev->next = tmpInsert;
-            tmp->next->prev = tmpInsert;
-            count += 1;
-            return;
+            if(tmp == head)
+            {
+                tmpInsert->next = tmp;
+                tmp->prev = tmpInsert;
+                head = tmpInsert;
+                count += 1;
+                return;
+            }
+            else if(tmp == tail)
+            {
+                tmp->next = tmpInsert;
+                tmpInsert->prev = tmp;
+                tail = tmpInsert;
+                count += 1;
+                return;
+            }
+            else
+            {
+                tmpInsert->prev = tmp->prev;
+                tmpInsert->next = tmp;
+                tmp->prev->next = tmpInsert;
+                tmp->prev = tmpInsert;
+                count += 1;
+                return;
+            }
         }
         tmp = tmp->next;
     }
@@ -197,6 +208,32 @@ void List<T>::insert(unsigned int pos, T addData)
 template<class T>
 void List<T>::removeByValue(T value)
 {
+    tmp = head;
+    while(tmp != NULL)
+    {
+        if(tmp->data == value)
+        {
+            if(tmp == head)
+            {
+                this->removeHead();
+                return;
+            }
+            else if (tmp == tail)
+            {
+                this->removeTail();
+                return;
+            }
+            else
+            {
+                tmp->prev->next = tmp->next;
+                tmp->next->prev = tmp->prev;
+                delete tmp;
+                count -= 1;
+                return;
+            }
+        }
+        tmp = tmp->next;
+    }
     
 }
 
@@ -204,7 +241,38 @@ void List<T>::removeByValue(T value)
 template<class T>
 void List<T>::removeByCount(unsigned int pos)
 {
-    
+    unsigned int currentPosition = 0;
+    tmp = head;
+    if(pos >= count)
+    {
+        return;
+    }
+    while(tmp != NULL)
+    {
+        if(currentPosition == pos)
+        {
+            if(tmp == head)
+            {
+                this->removeHead();
+                return;
+            }
+            else if(tmp == tail)
+            {
+                this->removeTail();
+                return;
+            }
+            else
+            {
+                tmp->prev->next = tmp->next;
+                tmp->next->prev = tmp->prev;
+                delete tmp;
+                count -= 1;
+                return;
+            }
+        }
+        tmp = tmp->next;
+        currentPosition += 1;
+    }
 }
 
 //удалить голову
@@ -216,6 +284,7 @@ void List<T>::removeHead()
         tail = NULL;
         delete head;
         count = 0;
+        return;
     }
     else
     {
@@ -225,6 +294,7 @@ void List<T>::removeHead()
         delete tmp;
         tmp = NULL;
         count -= 1;
+        return;
     }
 }
 
@@ -237,6 +307,7 @@ void List<T>:: removeTail()
         tail = NULL;
         delete head;
         count = 0;
+        return;
     }
     else
     {
@@ -245,6 +316,7 @@ void List<T>:: removeTail()
         tail->next = NULL;
         delete tmp;
         count -= 1;
+        return;
     }
 }
 
@@ -290,6 +362,12 @@ int main(int argc, const char * argv[])
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
     listArray.insert(2, 666);
+    cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
+    listArray.add(20);
+    cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
+    listArray.removeByCount(2);
+    cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
+    listArray.removeByValue(20);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     return 0;
 }
