@@ -22,7 +22,7 @@ private:
     node *head, *tail, *tmp;
 public:
     //конструктор по умолчанию
-    List();
+    explicit List();
     
     //деструктор
     ~List();
@@ -34,7 +34,7 @@ public:
     void show();
     
     //вывод количества элементов
-    int getCount();
+    int getCount() const;
     
     //вставить на определенную позицию
     void insert(unsigned int pos, T addData);
@@ -144,7 +144,7 @@ void List<T>::show()
 
 //вывести количество элементов в списке
 template<class T>
-int List<T>::getCount()
+int List<T>::getCount() const
 {
     return count;
 }
