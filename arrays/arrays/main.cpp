@@ -93,13 +93,7 @@ public:
 
 //конструктор по умолчанию
 template<class T>
-List<T>::List()
-{
-    head = NULL;
-    tail = NULL;
-    tmp = NULL;
-    count = 0;
-}
+List<T>::List(): head(NULL), tail(NULL), tmp(NULL), count(0) {}
 
 //деструктор
 template<class T>
@@ -351,6 +345,7 @@ int main(int argc, const char * argv[])
     listArray.add(10);
     listArray.add(30);
     listArray.add(40);
+    
     cin >> listArray;
     cout << "list:"s << endl << listArray << endl;
     listArray.show();
@@ -361,7 +356,7 @@ int main(int argc, const char * argv[])
     listArray.removeTail();
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
-    listArray.insert(2, 666);
+    //listArray.insert(2, 666);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
