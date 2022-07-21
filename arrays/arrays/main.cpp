@@ -54,6 +54,12 @@ public:
     //удалить весь список
     void clear();
     
+    //получения элемента по его порядку в списке
+    T& getItem(uint pos);
+    
+    //перегрузка оператора []
+    T& operator [](uint pos);
+    
     //перегрузка вывода
     friend ostream &operator<<(ostream &out, List &elem)
     {
@@ -90,6 +96,7 @@ public:
     }
     
 };
+
 
 //конструктор по умолчанию
 template<class T>
@@ -195,6 +202,7 @@ void List<T>::insert(unsigned int pos, T addData)
             }
         }
         tmp = tmp->next;
+        currentPosition += 1;
     }
 }
 
@@ -338,6 +346,20 @@ void List<T>::clear()
     }
 }
 
+//функция получения элемента по его порядковому номеру в списке
+template<class T>
+T& List<T>::getItem(uint pos)
+{
+    
+}
+
+//перегрузка оператора []
+template <class T>
+T& List<T>::operator[](uint pos)
+{
+    
+}
+
 
 int main(int argc, const char * argv[])
 {
@@ -356,7 +378,8 @@ int main(int argc, const char * argv[])
     listArray.removeTail();
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
-    //listArray.insert(2, 666);
+    cout << listArray.getCount() << endl;
+    listArray.insert(2, 666);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
