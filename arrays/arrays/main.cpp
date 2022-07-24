@@ -24,6 +24,9 @@ public:
     //конструктор по умолчанию
     explicit List();
     
+    //конструкток копирования
+    
+    
     //деструктор
     ~List();
     
@@ -37,13 +40,13 @@ public:
     int getCount() const;
     
     //вставить на определенную позицию
-    void insert(unsigned int pos, T addData);
+    void insert(unsigned int i, T addData);
     
     //удалить по значению
     void removeByValue(T value);
     
     //удалить по номеру позиции
-    void removeByCount(unsigned int pos);
+    void removeByCount(unsigned int i);
     
     //удалить голову списка
     void removeHead();
@@ -55,10 +58,10 @@ public:
     void clear();
     
     //получения элемента по его порядку в списке
-    T& getItem(uint pos);
+    T& getItem(uint i);
     
     //перегрузка оператора []
-    T& operator [](uint pos);
+    T& operator [](uint i);
     
     //перегрузка вывода
     friend ostream &operator<<(ostream &out, List &elem)
@@ -158,9 +161,9 @@ int List<T>::getCount() const
 
 //вставить в определенную позицию
 template<class T>
-void List<T>::insert(unsigned int pos, T addData)
+void List<T>::insert(unsigned int i, T addData)
 {
-    if(pos >= count)
+    if(i >= count)
     {
         this->add(addData);
         return;
@@ -173,21 +176,13 @@ void List<T>::insert(unsigned int pos, T addData)
     
     while(tmp != NULL)
     {
-        if(currentPosition == pos || currentPosition == count)
+        if(currentPosition == i || currentPosition == count)
         {
             if(tmp == head)
             {
                 tmpInsert->next = tmp;
                 tmp->prev = tmpInsert;
                 head = tmpInsert;
-                count += 1;
-                return;
-            }
-            else if(tmp == tail)
-            {
-                tmp->next = tmpInsert;
-                tmpInsert->prev = tmp;
-                tail = tmpInsert;
                 count += 1;
                 return;
             }
@@ -241,17 +236,17 @@ void List<T>::removeByValue(T value)
 
 //удалить по позиции
 template<class T>
-void List<T>::removeByCount(unsigned int pos)
+void List<T>::removeByCount(unsigned int i)
 {
     unsigned int currentPosition = 0;
     tmp = head;
-    if(pos >= count)
+    if(i >= count)
     {
         return;
     }
     while(tmp != NULL)
     {
-        if(currentPosition == pos)
+        if(currentPosition == i)
         {
             if(tmp == head)
             {
@@ -348,16 +343,33 @@ void List<T>::clear()
 
 //функция получения элемента по его порядковому номеру в списке
 template<class T>
-T& List<T>::getItem(uint pos)
+T& List<T>::getItem(uint i)
 {
+    uint curretPosition = 0;
+    tmp = head;
     
+    
+    while(tmp != NULL)
+    {
+        if(curretPosition == i)
+        {
+            return tmp->data;
+        }
+        else if(curretPosition > i || i > count)
+        {
+            return tail->data;
+        }
+        tmp = tmp->next;
+        curretPosition += 1;
+    }
+    return head->data;
 }
 
 //перегрузка оператора []
 template <class T>
-T& List<T>::operator[](uint pos)
+T& List<T>::operator[](uint i)
 {
-    
+    return this->getItem(i);
 }
 
 
@@ -378,10 +390,13 @@ int main(int argc, const char * argv[])
     listArray.removeTail();
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.add(20);
-    cout << listArray.getCount() << endl;
-    listArray.insert(2, 666);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
+    listArray.insert(2, 666);
+    
     listArray.add(20);
+    cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
+    cout << listArray.getItem(2) << endl;
+    cout << listArray[3] << endl;
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
     listArray.removeByCount(2);
     cout << "count: "s << listArray.getCount() << endl << "list"s << endl << listArray << endl;
