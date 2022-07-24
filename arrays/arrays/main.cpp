@@ -25,7 +25,7 @@ public:
     explicit List();
     
     //конструкток копирования
-    
+    List(List &copy);
     
     //деструктор
     ~List();
@@ -104,6 +104,18 @@ public:
 //конструктор по умолчанию
 template<class T>
 List<T>::List(): head(NULL), tail(NULL), tmp(NULL), count(0) {}
+
+//конструктор копирования
+template<class T>
+List<T>::List(List &copy)
+{
+    copy.tmp = copy.head;
+    while(copy.tmp != NULL)
+    {
+        this->add(copy.tmp->data);
+        copy.tmp = copy.tmp->next;
+    }
+}
 
 //деструктор
 template<class T>
